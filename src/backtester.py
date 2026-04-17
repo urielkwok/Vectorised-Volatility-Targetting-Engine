@@ -2,14 +2,16 @@ import pandas as pd
 import numpy as np
 
 
-def vol_backtest(prices, target_vol=0.15, lookback=20, max_leverage=2.0):
+def vol_backtest(prices, target_vol=0.15, lookback=20, max_leverage=2.0, cost_per_trade=0.0005):
     base_returns = np.log(prices / prices.shift(1))
     realised_vol = base_returns.rolling(window=lookback).std() * np.sqrt(252)
     weights = target_vol / realised_vol
     valid_weights = weights.clip(upper=max_leverage)
     weight_used = valid_weights.shift(1)
 
-    vol_returns = base_returns * weight_used
+    weight_change = weight_used.diff().abs()
+    trading_costs = weight_change * cost_per_trade
+    vol_returns = base_returns * weight_used - trading_costs
     total_vol_returns = vol_returns.cumsum().apply(np.exp)
     shifted_base_returns = base_returns.iloc[lookback + 1:]
     total_base_returns = shifted_base_returns.cumsum().apply(np.exp)
