@@ -1,6 +1,6 @@
 # Vectorised Volatility-Targeting Backtester
 
-This backtester follows a **volatility-targetting strategy**, using a rolling 20-day window to calculate the realized volatility of an asset, and adjusting the weight of a long position in order to maintain overall volatility at a target level.
+This backtester follows a volatility-targetting strategy, using a rolling 20-day window to calculate the realized volatility of an asset, and adjusting the weight of a long position in order to maintain overall volatility at a target level.
 
 ## Results
 
